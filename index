@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Game Kéo Thả</title>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background: #f0f0f0;
+    }
+    #game-area {
+      width: 400px;
+      height: 400px;
+      background: white;
+      border: 2px solid #333;
+      position: relative;
+    }
+    #drag {
+      width: 80px;
+      height: 80px;
+      background: blue;
+      position: absolute;
+      top: 20px;
+      left: 20px;
+      cursor: grab;
+    }
+    #target {
+      width: 120px;
+      height: 120px;
+      background: lightgreen;
+      position: absolute;
+      bottom: 30px;
+      right: 30px;
+      border: 2px dashed green;
+    }
+  </style>
+</head>
+<body>
+  <div id="game-area">
+    <div id="drag"></div>
+    <div id="target"></div>
+  </div>
+
+  <script>
+    const drag = document.getElementById("drag");
+    const target = document.getElementById("target");
+
+    let offsetX, offsetY, dragging = false;
+
+    drag.addEventListener("mousedown", e => {
+      dragging = true;
+      offsetX = e.clientX - drag.offsetLeft;
+      offsetY = e.clientY - drag.offsetTop;
+    });
+
+    document.addEventListener("mousemove", e => {
+      if (!dragging) return;
+      drag.style.left = e.clientX - offsetX + "px";
+      drag.style.top = e.clientY - offsetY + "px";
+    });
+
+    document.addEventListener("mouseup", () => {
+      if (!dragging) return;
+      dragging = false;
+
+      const dragRect = drag.getBoundingClientRect();
+      const targetRect = target.getBoundingClientRect();
+
+      if (
+        dragRect.left < targetRect.right &&
+        dragRect.right > targetRect.left &&
+        dragRect.top < targetRect.bottom &&
+        dragRect.bottom > targetRect.top
+      ) {
+        alert("Bạn đã kéo đúng vị trí!");
+      }
+    });
+  </script>
+</body>
+</html>
